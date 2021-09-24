@@ -146,7 +146,7 @@ class ScotlandCovid19Data
       headers = ['Date', *health_boards, 'Grand Total']
       @@cases = CSV.read(File.join(DATA_DIR, OLD_HEALTH_BOARD_CASES_FILE), headers: headers, converters: [number_converter, date_converter])
                    .[](1..-1) # Skip the header row
-                   .map { |record| [record['Date'], [*health_boards, 'Grand Total'].zip(record.values_at(*health_boards, 'Grand Total').map { _1.eql?('*') ? nil : _1 }).to_h] }
+                   .map { |record| [record['Date'], [*health_boards, 'Grand Total'].zip(record.values_at(*health_boards, 'Grand Total').map { _1.eql?('*') || _1.eql?('NA') ? nil : _1 }).to_h] }
                    .to_h
 
       CSV.read(File.join(DATA_DIR, HEALTH_BOARD_CASES_FILE), headers: headers, converters: [number_converter, date_converter])
@@ -170,7 +170,7 @@ class ScotlandCovid19Data
       number_converter = ->(value, field) { !field.header.eql?('Date') ? value.eql?('X') ? nil : value.to_i / health_board_scale.fetch(field.header) : value }
 
       @@deaths = CSV.read(File.join(DATA_DIR, OLD_HEALTH_BOARD_DEATHS_FILE), headers: true, converters: [number_converter, date_converter])
-                    .map { |record| record.to_h.transform_values! { |value| value.eql?('*') ? nil : value } }
+                    .map { |record| record.to_h.transform_values! { |value| value.eql?('*') || value.eql?('NA') ? nil : value } }
                     .reject { |record| record.values_at(*health_boards).all?(:nil?) || record['Date'].nil? }
                     .map { |record| [record['Date'], [*health_boards, 'Grand Total'].zip(record.values_at(*health_boards, 'Grand Total')).to_h] }
                     .to_h
@@ -189,14 +189,14 @@ class ScotlandCovid19Data
 
       @@intensive_care = CSV.read(File.join(DATA_DIR, OLD_INTENSIVE_CARE_FILE), headers: ['Date', 'Grand Total'])
                             .[](1..-1) # Skip the header row
-                            .map { |record| record.to_h.transform_values! { |value| value.eql?('*') ? nil : value } }
+                            .map { |record| record.to_h.transform_values! { |value| value.eql?('*') || value.eql?('NA') ? nil : value } }
                             .map { |record| [Date.parse(record['Date']), record['Grand Total']&.to_i] }
                             .to_h
 
       headers = ['Date', *health_boards, 'The Golden Jubilee National Hospital', 'Grand Total']
       CSV.read(File.join(DATA_DIR, INTENSIVE_CARE_FILE), headers: headers, converters: [number_converter])
          .[](1..-1) # Skip the header row
-         .map { |record| record.to_h.transform_values! { |value| value.eql?('*') ? nil : value } }
+         .map { |record| record.to_h.transform_values! { |value| value.eql?('*') || value.eql?('NA') ? nil : value } }
          .each do |record|
            record['Grand Total'] = record.values[1..-1].map(&:to_i).sum
            @@intensive_cares[Date.parse(record['Date'])] = record
@@ -218,14 +218,14 @@ class ScotlandCovid19Data
 
       @@deceased = CSV.read(File.join(DATA_DIR, OLD_DECEASED_FILE), headers: headers, converters: [:numeric, date_converter])
                       .[](1..-1) # Skip the header row
-                      .map { |record| record.to_h.transform_values! { |value| value.eql?('*') ? nil : value } }
+                      .map { |record| record.to_h.transform_values! { |value| value.eql?('*') || value.eql?('NA') ? nil : value } }
                       .reject { |record| record['Date'].nil? }
                       .map { |record| [record['Date'], record['Deceased']] }
                       .to_h
 
       CSV.read(File.join(DATA_DIR, DECEASED_FILE), headers: headers, converters: [:numeric, date_converter])
          .[](1..-1) # Skip the header row
-         .map { |record| record.to_h.transform_values! { |value| value.eql?('*') ? nil : value } }
+         .map { |record| record.to_h.transform_values! { |value| value.eql?('*') || value.eql?('NA') ? nil : value } }
          .reject { |record| record['Deceased'].nil? }
          .each { |record| @@deceased[record['Date']] = record['Deceased'] }
 
@@ -251,7 +251,7 @@ class ScotlandCovid19Data
 
       tests = CSV.read(File.join(DATA_DIR, TESTS_FILE), headers: headers, converters: [:numeric, date_converter])
                  .[](1..-1) # Skip the header row
-                 .map { |record| record.to_h.transform_values! { |value| value.eql?('*') ? nil : value } }
+                 .map { |record| record.to_h.transform_values! { |value| value.eql?('*') || value.eql?('NA') ? nil : value } }
                  .reject { |record| record['Date'].nil? }
       tests.each_cons(2) do |a, b|
         next if a['Total Positive'].nil? || b['Total Positive'].nil?
