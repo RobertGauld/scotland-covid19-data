@@ -9,4 +9,5 @@ gem 'rack', '~> 2.2', '>= 2.2.3'
 gem 'rollbar', '~> 2.24'
 gem 'rubyzip', '~> 2.3', require: 'zip'
 gem 'scout_apm', '~> 2.6', require: ENV.key?('SCOUT_KEY')
+gem 'webrick', '~> 1.7'
 gem 'zeitwerk', '~> 2.3'
