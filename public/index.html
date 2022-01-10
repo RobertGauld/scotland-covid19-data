@@ -1,0 +1,482 @@
+<html>
+<head>
+<title>Scotland's Covid-19 Data</title>
+<link href='index.css' rel='stylesheet'>
+</head>
+<body>
+<h1>Scotland's Covid-19 Data</h1>
+<p>
+This site hastily thrown together by
+<a href='https://twitter.com/robertgauld'>@RobertGauld</a>,
+the code is available at
+<a href='https://github.com/robertgauld/scotland-covid19-data'>https://github.com/robertgauld/scotland-covid19-data</a>.
+</p>
+<p>
+Thanks to:
+<ul>
+<li>
+<a href='https://twitter.com/watty62'>@watty62</a>
+for collecting and preprocessing the Scotland data at
+<a href='https://github.com/watty62/Scot_covid19'>https://github.com/watty62/Scot_covid19</a>,
+thanks to his further work this data is now available from the Scottish Government at
+<a href='https://github.com/DataScienceScotland/COVID-19-Management-Information'>https://github.com/DataScienceScotland/COVID-19-Management-Information</a>.
+<br>
+Data upto Friday 8 April 2022 is currently available and displayed.
+</li>
+<li>
+<a href='https://twitter.com/tom_e_white'>@tom_e_white</a>
+for collecting and preprocessing the UK data at
+<a href='https://github.com/tomwhite/covid-19-uk-data'>https://github.com/tomwhite/covid-19-uk-data</a>
+and to
+<a href='https://github.com/geeogi'>geeogi</a>
+for keeping it going at
+<a href='https://github.com/geeogi/covid-19-uk-data'>https://github.com/geeogi/covid-19-uk-data</a>.
+This data is now gathered from
+<a href='https://coronavirus.data.gov.uk'>https://coronavirus.data.gov.uk</a>.
+<br>
+Data upto Monday 9 May 2022 is currently available and displayed.
+</li>
+<li>
+Also includes a Google dataset: Google LLC "Google COVID-19 Community Mobility Reports".
+<a href='https://www.google.com/covid19/mobility/'>https://www.google.com/covid19/mobility/</a>
+Accessed
+2022-05-10.
+</li>
+</ul>
+</p>
+<p>
+<a href='scotland-covid19-data.zip'>Download the current site and raw data.</a>
+</p>
+<p>
+If you don't like just looking at plots you may find the following visualisations useful:
+<ul>
+<li>
+<a href='https://covidvisualizer.com/country?iso=GB'>https://covidvisualizer.com/country?iso=GB</a>
+</li>
+<li>
+<a href='https://www.covidlive.co.uk/'>https://www.covidlive.co.uk/</a>
+</li>
+<li>
+<a href='https://russss.github.io/covidtracker/map.html'>https://russss.github.io/covidtracker/map.html</a>
+</li>
+<li>
+<a href='https://91-divoc.com/pages/covid-visualization/'>https://91-divoc.com/pages/covid-visualization/</a>
+</li>
+<li>
+<a href='https://coronavirus.data.gov.uk/'>https://coronavirus.data.gov.uk/</a>
+</li>
+<li>
+<a href='https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview'>https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview</a>
+</li>
+</ul>
+</p>
+<hr>
+<div id='links' style='padding-left: 15%; padding-right: 15%;'>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#uk' style='margin-left: 1em; margin-right: 1em;'>UK</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#scotland' style='margin-left: 1em; margin-right: 1em;'>Scotland</a>
+</div>
+<br>
+<br>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#ayrshire_and_arran' style='margin-left: 1em; margin-right: 1em;'>Ayrshire and Arran</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#borders' style='margin-left: 1em; margin-right: 1em;'>Borders</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#dumfries_and_galloway' style='margin-left: 1em; margin-right: 1em;'>Dumfries and Galloway</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#fife' style='margin-left: 1em; margin-right: 1em;'>Fife</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#forth_valley' style='margin-left: 1em; margin-right: 1em;'>Forth Valley</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#grampian' style='margin-left: 1em; margin-right: 1em;'>Grampian</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#greater_glasgow_and_clyde' style='margin-left: 1em; margin-right: 1em;'>Greater Glasgow and Clyde</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#highland' style='margin-left: 1em; margin-right: 1em;'>Highland</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#lanarkshire' style='margin-left: 1em; margin-right: 1em;'>Lanarkshire</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#lothian' style='margin-left: 1em; margin-right: 1em;'>Lothian</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#orkney' style='margin-left: 1em; margin-right: 1em;'>Orkney</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#shetland' style='margin-left: 1em; margin-right: 1em;'>Shetland</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#tayside' style='margin-left: 1em; margin-right: 1em;'>Tayside</a>
+</div>
+<div style='display: inline-block; min-width: 16em;'>
+<a href='#western_isles' style='margin-left: 1em; margin-right: 1em;'>Western Isles</a>
+</div>
+</div>
+<hr>
+<div class='chart_group' id='uk'>
+<a name='uk'></a>
+<h2>Whole of the UK</h2>
+<div class='chart'>
+<a href='uk_total_cases_per_100000.png'>
+<img src='uk_total_cases_per_100000.png'>
+</a>
+<br>
+<a href='uk_cases_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='uk_total_deaths_per_100000.png'>
+<img src='uk_total_deaths_per_100000.png'>
+</a>
+<br>
+<a href='uk_deaths_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='uk_daily_cases_per_100000.png'>
+<img src='uk_daily_cases_per_100000.png'>
+</a>
+<br>
+<a href='uk_cases_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='uk_daily_deaths_per_100000.png'>
+<img src='uk_daily_deaths_per_100000.png'>
+</a>
+<br>
+<a href='uk_deaths_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='uk_daily_cases_per_100000_averaged_7_days.png'>
+<img src='uk_daily_cases_per_100000_averaged_7_days.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='uk_daily_deaths_per_100000_averaged_7_days.png'>
+<img src='uk_daily_deaths_per_100000_averaged_7_days.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='england_vs_uk.png'>
+<img src='england_vs_uk.png'>
+</a>
+<br>
+<a href='england_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='scotland_vs_uk.png'>
+<img src='scotland_vs_uk.png'>
+</a>
+<br>
+<a href='scotland_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='wales_vs_uk.png'>
+<img src='wales_vs_uk.png'>
+</a>
+<br>
+<a href='wales_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='northern_ireland_vs_uk.png'>
+<img src='northern_ireland_vs_uk.png'>
+</a>
+<br>
+<a href='northern_ireland_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='mobility_uk.png'>
+<img src='mobility_uk.png'>
+</a>
+</div>
+</div>
+<div class='chart_group' id='scotland'>
+<a name='scotland'></a>
+<h2>Whole of Scotland</h2>
+<div class='chart'>
+<a href='scotland_daily_tests.png'>
+<img src='scotland_daily_tests.png'>
+</a>
+<br>
+<a href='scotland_tests.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='scotland_cumulative_tests.png'>
+<img src='scotland_cumulative_tests.png'>
+</a>
+<br>
+<a href='scotland_tests.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='scotland_total_cases_per_100000.png'>
+<img src='scotland_total_cases_per_100000.png'>
+</a>
+<br>
+<a href='scotland_cases_per_100000.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='scotland_daily_cases_per_100000_averaged_7_days.png'>
+<img src='scotland_daily_cases_per_100000_averaged_7_days.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='scotland_icus.png'>
+<img src='scotland_icus.png'>
+</a>
+<br>
+<a href='scotland_icus.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='scotland_icu_deceased.png'>
+<img src='scotland_icu_deceased.png'>
+</a>
+<br>
+<a href='scotland_icu_deceased.csv'>Download data</a>
+</div>
+<div class='chart'>
+<a href='mobility_scotland.png'>
+<img src='mobility_scotland.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='mobility_scotland_vs_uk.png'>
+<img src='mobility_scotland_vs_uk.png'>
+</a>
+</div>
+</div>
+<hr>
+<div class='health_board chart_group' id='ayrshire_and_arran'>
+<a name='ayrshire_and_arran'></a>
+<h2>Ayrshire and Arran</h2>
+<a href='ayrshire_and_arran_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='ayrshire_and_arran_per_100000.png'>
+<img src='ayrshire_and_arran_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='ayrshire_and_arran_vs_scotland.png'>
+<img src='ayrshire_and_arran_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='borders'>
+<a name='borders'></a>
+<h2>Borders</h2>
+<a href='borders_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='borders_per_100000.png'>
+<img src='borders_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='borders_vs_scotland.png'>
+<img src='borders_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='dumfries_and_galloway'>
+<a name='dumfries_and_galloway'></a>
+<h2>Dumfries and Galloway</h2>
+<a href='dumfries_and_galloway_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='dumfries_and_galloway_per_100000.png'>
+<img src='dumfries_and_galloway_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='dumfries_and_galloway_vs_scotland.png'>
+<img src='dumfries_and_galloway_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='fife'>
+<a name='fife'></a>
+<h2>Fife</h2>
+<a href='fife_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='fife_per_100000.png'>
+<img src='fife_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='fife_vs_scotland.png'>
+<img src='fife_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='forth_valley'>
+<a name='forth_valley'></a>
+<h2>Forth Valley</h2>
+<a href='forth_valley_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='forth_valley_per_100000.png'>
+<img src='forth_valley_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='forth_valley_vs_scotland.png'>
+<img src='forth_valley_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='grampian'>
+<a name='grampian'></a>
+<h2>Grampian</h2>
+<a href='grampian_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='grampian_per_100000.png'>
+<img src='grampian_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='grampian_vs_scotland.png'>
+<img src='grampian_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='greater_glasgow_and_clyde'>
+<a name='greater_glasgow_and_clyde'></a>
+<h2>Greater Glasgow and Clyde</h2>
+<a href='greater_glasgow_and_clyde_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='greater_glasgow_and_clyde_per_100000.png'>
+<img src='greater_glasgow_and_clyde_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='greater_glasgow_and_clyde_vs_scotland.png'>
+<img src='greater_glasgow_and_clyde_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='highland'>
+<a name='highland'></a>
+<h2>Highland</h2>
+<a href='highland_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='highland_per_100000.png'>
+<img src='highland_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='highland_vs_scotland.png'>
+<img src='highland_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='lanarkshire'>
+<a name='lanarkshire'></a>
+<h2>Lanarkshire</h2>
+<a href='lanarkshire_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='lanarkshire_per_100000.png'>
+<img src='lanarkshire_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='lanarkshire_vs_scotland.png'>
+<img src='lanarkshire_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='lothian'>
+<a name='lothian'></a>
+<h2>Lothian</h2>
+<a href='lothian_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='lothian_per_100000.png'>
+<img src='lothian_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='lothian_vs_scotland.png'>
+<img src='lothian_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='orkney'>
+<a name='orkney'></a>
+<h2>Orkney</h2>
+<a href='orkney_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='orkney_per_100000.png'>
+<img src='orkney_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='orkney_vs_scotland.png'>
+<img src='orkney_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='shetland'>
+<a name='shetland'></a>
+<h2>Shetland</h2>
+<a href='shetland_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='shetland_per_100000.png'>
+<img src='shetland_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='shetland_vs_scotland.png'>
+<img src='shetland_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='tayside'>
+<a name='tayside'></a>
+<h2>Tayside</h2>
+<a href='tayside_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='tayside_per_100000.png'>
+<img src='tayside_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='tayside_vs_scotland.png'>
+<img src='tayside_vs_scotland.png'>
+</a>
+</div>
+</div>
+<div class='health_board chart_group' id='western_isles'>
+<a name='western_isles'></a>
+<h2>Western Isles</h2>
+<a href='western_isles_per_100000.csv'>Download data</a>
+<br>
+<div class='chart'>
+<a href='western_isles_per_100000.png'>
+<img src='western_isles_per_100000.png'>
+</a>
+</div>
+<div class='chart'>
+<a href='western_isles_vs_scotland.png'>
+<img src='western_isles_vs_scotland.png'>
+</a>
+</div>
+</div>
+</body>
+</html>
