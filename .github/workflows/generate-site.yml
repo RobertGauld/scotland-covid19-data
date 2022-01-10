@@ -37,7 +37,7 @@ jobs:
            git checkout published-site &&
            mv -f temp/* public/ &&
            git add public &&
-           git commit -m "Build site ($(date))"
+           git commit --amend --message "Build site ($(date))"
 
     - name: Push to published-site branch ready for Heroku to deploy
-      run: git push --set-upstream origin HEAD:published-site
+      run: git push --set-upstream origin HEAD:published-site --force
