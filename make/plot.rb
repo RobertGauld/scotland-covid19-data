@@ -21,8 +21,6 @@ module Make
     end
 
     def self.scotland(**options)
-      scotland_daily_tests(**options)
-      scotland_cumulative_tests(**options)
       scotland_cases_by_health_board(**options)
       scotland_cases_by_health_board_smoothed(**options)
       scotland_deaths_by_health_board(**options)
@@ -31,66 +29,6 @@ module Make
       country_comparison('Scotland', **options)
       mobility('Scotland', **options)
       mobility_comparison('Scotland', **options)
-    end
-
-    def self.scotland_daily_tests(**options)
-      $logger.info 'Plotting daily test data for Scotland.'
-      data = Make::Data.scotland_tests
-                       .map { |record| record.push record[1] + record[2] }
-                       .transpose
-
-      basic_plot(**options, filename: 'scotland_daily_tests.png') do |plot|
-        plot.title 'Scottish COVID-19 Daily Tests'
-        plot.ytics 'nomirror'
-        plot.set 'ylabel "Daily Test Count"'
-
-        plot.y2range '[0:]'
-        plot.y2tics 'nomirror'
-        plot.set 'y2label "Positive Test Rate (%)" offset -2'
-
-        plot.add_data Gnuplot::DataSet.new([data[0], data[6]]) { |ds|
-          ds.using = '1:2'
-          ds.with = 'filledcurve x1'
-          ds.title = 'Positive'
-        }
-
-        plot.add_data Gnuplot::DataSet.new([data[0], data[2]]) { |ds|
-          ds.using = '1:2'
-          ds.with = 'filledcurve x1'
-          ds.title = 'Negative'
-        }
-
-        plot.add_data Gnuplot::DataSet.new([data[0], data[3]]) { |ds|
-          ds.axes = 'x1y2'
-          ds.using = '1:($2 * 100)'
-          ds.with = 'line'
-          ds.title = 'Positive Rate'
-          ds.linecolor = 'black'
-        }
-      end
-    end
-
-    def self.scotland_cumulative_tests(**options)
-      $logger.info 'Plotting cumulative test data for Scotland.'
-      data = Make::Data.scotland_tests
-                       .map { |record| record.push record[4] + record[5] }
-                       .transpose
-
-      basic_plot(**options, filename: 'scotland_cumulative_tests.png') do |plot|
-        plot.title 'Scottish COVID-19 Cumulative Tests'
-
-        plot.add_data Gnuplot::DataSet.new([data[0], data[6]]) { |ds|
-          ds.using = '1:2'
-          ds.with = 'filledcurve x1'
-          ds.title = 'Positive'
-        }
-
-        plot.add_data Gnuplot::DataSet.new([data[0], data[5]]) { |ds|
-          ds.using = '1:2'
-          ds.with = 'filledcurve x1'
-          ds.title = 'Negative'
-        }
-      end
     end
 
     def self.scotland_cases_by_health_board(**options)

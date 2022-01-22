@@ -41,14 +41,6 @@ module Make
       end
     end
 
-    def self.scotland_tests
-      tests = ScotlandCovid19Data.tests
-
-      tests.values.sort_by { |record| record['Date'] }.map do |record|
-        record.values_at('Date', 'Today Positive', 'Today Negative', 'Today Positive Rate', 'Total Positive', 'Total Negative')
-      end
-    end
-
     def self.health_board(name)
       fail "#{name.inspect} is not a known health board" unless ScotlandCovid19Data.health_boards.include?(name)
 

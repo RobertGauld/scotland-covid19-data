@@ -5,18 +5,15 @@ class ScotlandCovid19Data
   HEALTH_BOARD_CASES_FILE = 'COVID19 - Daily Management Information - Scottish Health Boards - Cumulative cases.csv'
   INTENSIVE_CARE_FILE = 'COVID19 - Daily Management Information - Scottish Health Boards - ICU patients - Confirmed.csv'
   DECEASED_FILE = 'COVID19 - Daily Management Information - Scotland - Deaths.csv'
-  TESTS_FILE = 'COVID19 - Daily Management Information - Scotland - Testing.csv'
   HEALTH_BOARD_POPULATIONS_FILE = 'HB_Populations.csv'
   OLD_HEALTH_BOARD_CASES_FILE = 'regional_cases.csv'
   OLD_HEALTH_BOARD_DEATHS_FILE = 'regional_deaths.csv'
   OLD_INTENSIVE_CARE_FILE = 'intensive_care.csv'
   OLD_DECEASED_FILE = 'scot_test_positive_deceased.csv'
-  OLD_TESTS_FILE = 'scot_tests.csv'
   DOWNLOAD_FILES = [
     HEALTH_BOARD_CASES_FILE,
     INTENSIVE_CARE_FILE,
     DECEASED_FILE,
-    TESTS_FILE
   ].freeze
 
   def self.health_boards
@@ -54,11 +51,6 @@ class ScotlandCovid19Data
     @@deceased
   end
 
-  def self.tests
-    load_tests unless defined?(@@tests)
-    @@tests
-  end
-
   def self.download(force: false, only: nil)
     $logger.info (force ? 'Downloading all' : 'Downloading new') + \
                  (only ? " #{only.inspect} data." : ' data.')
@@ -89,7 +81,6 @@ class ScotlandCovid19Data
     load_deaths
     load_intensive_care
     load_deceased
-    load_tests
   end
 
   def self.update
@@ -231,39 +222,6 @@ class ScotlandCovid19Data
 
 
       $logger.debug "Read deceased data for #{@@deceased.keys.sort.values_at(0, -1).map(&:to_s).join(' to ')}."
-    end
-
-    def load_tests
-      $logger.info "Reading tests data (#{TESTS_FILE})."
-      unless File.exist?(File.join(DATA_DIR, TESTS_FILE))
-        download(only: TESTS_FILE)
-      end
-
-      old_headers = ['Date', 'Conducted', 'Today Positive', 'Today Negative', 'Total Positive', 'Total Negative']
-      headers = ['Date', 'Total Negative', 'Total Positive', 'Total', 'NHS Daily', 'NHS Cumulative', 'Regional Daily', 'Regional Cumulative']
-      date_converter = ->(value, field) { field.header.eql?('Date') && value != 'Date' ? (value.eql?('NA') ? nil : Date.parse(value)) : value }
-
-      @@tests = CSV.read(File.join(DATA_DIR, OLD_TESTS_FILE), headers: old_headers, converters: [:numeric, date_converter])
-                   .[](1..-1) # Skip the header row
-                   .reject { |record| record['Date'].nil? }
-                   .map { |record| [record['Date'], record.to_h] }
-                   .to_h
-
-      tests = CSV.read(File.join(DATA_DIR, TESTS_FILE), headers: headers, converters: [:numeric, date_converter])
-                 .[](1..-1) # Skip the header row
-                 .map { |record| record.to_h.transform_values! { |value| value.eql?('*') || value.eql?('NA') ? nil : value } }
-                 .reject { |record| record['Date'].nil? }
-      tests.each_cons(2) do |a, b|
-        next if a['Total Positive'].nil? || b['Total Positive'].nil?
-        next if a['Total Negative'].nil? || b['Total Negative'].nil?
-        b['Today Positive'] = b['Total Positive'] - a['Total Positive']
-        b['Today Negative'] = b['Total Negative'] - a['Total Negative']
-        b['Today Positive Rate'] = b['Today Positive'].to_f / (b['Today Positive'] + b['Today Negative'])
-      end
-      tests.reject { |record| record['Today Positive'].nil? || record['Today Negative'].nil? }
-           .each { |record| @@tests[record['Date']] = record.to_h }
-
-      $logger.debug "Read tests data for #{@@tests.keys.sort.values_at(0, -1).map(&:to_s).join(' to ')}."
     end
 
     def github_latest_commit_sha

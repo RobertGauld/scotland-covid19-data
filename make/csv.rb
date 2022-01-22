@@ -26,7 +26,6 @@ module Make
       scotland_deaths_by_health_board **options
       scotland_icus **options
       scotland_icu_deceased **options
-      scotland_tests **options
     end
 
     def self.scotland_cases_by_health_board(**options)
@@ -55,13 +54,6 @@ module Make
       headers = ['Date', 'Patients in intensive care', 'Cumulative deceased']
       data = Make::Data.scotland_icu_deceased
       render headers, data, filename:  'scotland_icu_deceased.csv', **options
-    end
-
-    def self.scotland_tests(**options)
-      $logger.info 'Writing tests CSV for Scotland.'
-      headers = ['Date', 'Positive', 'Negative', 'Positive Rate', 'Cumulative Positive', 'Cumulative Negative']
-      data = Make::Data.scotland_tests
-      render headers, data, filename:  'scotland_tests.csv', **options
     end
 
     def self.health_board(name, **options)
