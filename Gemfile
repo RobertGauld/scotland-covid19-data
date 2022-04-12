@@ -3,6 +3,7 @@ ruby File.read(File.join(__dir__, '.ruby-version')).chomp
 
 gem 'awesome_print', '~> 1.8'
 gem 'gnuplot', '~> 2.6'
+  gem 'matrix'
 gem 'haml', '~> 5.1'
 gem 'nokogiri', '~> 1.12'
 gem 'rack', '~> 2.2', '>= 2.2.3'

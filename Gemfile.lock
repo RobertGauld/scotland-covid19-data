@@ -7,11 +7,12 @@ GEM
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
-    mini_portile2 (2.6.1)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    matrix (0.4.2)
+    mini_portile2 (2.8.0)
+    nokogiri (1.13.4)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    parser (3.0.2.0)
+    parser (3.1.1.0)
       ast (~> 2.4.1)
     racc (1.6.0)
     rack (2.2.3)
@@ -22,7 +23,7 @@ GEM
     temple (0.8.2)
     tilt (2.0.10)
     webrick (1.7.0)
-    zeitwerk (2.5.1)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   ruby
@@ -31,6 +32,7 @@ DEPENDENCIES
   awesome_print (~> 1.8)
   gnuplot (~> 2.6)
   haml (~> 5.1)
+  matrix
   nokogiri (~> 1.12)
   rack (~> 2.2, >= 2.2.3)
   rollbar (~> 2.24)
@@ -40,7 +42,7 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 RUBY VERSION
-   ruby 3.0.3p157
+   ruby 3.1.1p18
 
 BUNDLED WITH
-   2.2.32
+   2.3.7
